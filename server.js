@@ -19,8 +19,8 @@ configDotenv({ path: ['.env', '.env.local'] });
 const app = express();
 
 app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 var fnRoutes = []
 
@@ -139,18 +139,18 @@ console.log(`\n👉 Loading functions from local filesystem\n`)
 var localLocations = glob.sync('./api/**/*.js', { ignore: "./node_modules/**" }) 
 
 for (const localLocation of localLocations) {
-    await loadRoutesFromLocation(app, `./${localLocation}`, '/local', routeMapperFn)
+    await loadRoutesFromLocation(app, `./${localLocation}`, '', routeMapperFn)
 }
 console.log(`\n🎉 All routes from filesystem are loaded\n`);
 
 console.log(`\n👉 Loading functions from remote locations\n`)
 
 var httpLocations = [
-    "https://raw.githubusercontent.com/noroutine/fn/master/api/index.js",
-    "https://raw.githubusercontent.com/noroutine/fn/master/api/a/fn.js",
-    "https://raw.githubusercontent.com/noroutine/fn/master/api/a/b/fn.js",
-    "https://raw.githubusercontent.com/noroutine/fn/master/api/fn.js",
-    "https://raw.githubusercontent.com/noroutine/fn/master/api/nofn.js",
+    // "https://raw.githubusercontent.com/noroutine/fn/master/api/index.js",
+    // "https://raw.githubusercontent.com/noroutine/fn/master/api/a/fn.js",
+    // "https://raw.githubusercontent.com/noroutine/fn/master/api/a/b/fn.js",
+    // "https://raw.githubusercontent.com/noroutine/fn/master/api/fn.js",
+    // "https://raw.githubusercontent.com/noroutine/fn/master/api/nofn.js",
 ]
 
 for (const remoteLocation of httpLocations) {
